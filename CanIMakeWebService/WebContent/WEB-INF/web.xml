@@ -9,4 +9,13 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+
+<servlet>
+    <servlet-name>getstops</servlet-name>
+    <servlet-class>com.canimakeit.servlets.GetStops</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>getstops</servlet-name>
+    <url-pattern>/GetStops</url-pattern>
+</servlet-mapping>
 </web-app>
