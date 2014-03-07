@@ -54,7 +54,7 @@ public class GetStops extends HttpServlet {
 			out.print(jsonArray.toString());
 			out.flush();
 		}catch(Exception e){
-			
+			System.out.println("An error occured trying to get stops" + e.getMessage());
 		}		
 	}
 

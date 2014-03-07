@@ -10,21 +10,28 @@ import java.util.List;
 
 import com.canimakeit.models.StopModel;
 
-public class StopsDao {
+public class StopsDao extends ParentDao {
 	
 	public List<StopModel> getStops() throws Exception{
 		Connection connection =  getConnection();
+		List<StopModel> listStopModels = new ArrayList<StopModel>();
 		if(connection!=null){
-			System.out.println("GOT A CONNECTION");
-			String getStops = "select * from stops";			
-			PreparedStatement getStmt = connection.prepareStatement(getStops);
-			ResultSet resultSet = getStmt.executeQuery();
-			List<StopModel> stopModels = parseResultSet(resultSet);
-			resultSet.close();
-			connection.close();
-			return stopModels;			
+			try{
+				System.out.println("GOT A CONNECTION");
+				String getStops = "select * from stops";			
+				PreparedStatement getStmt = connection.prepareStatement(getStops);
+				ResultSet resultSet = getStmt.executeQuery();
+				listStopModels = parseResultSet(resultSet);
+				resultSet.close();
+				connection.close();
+			}catch(Exception e){
+				
+			}finally{
+				connection.close();
+			}
+			return listStopModels;			
 		}else{
-			return new ArrayList<StopModel>();
+			return listStopModels;
 		}
 	}
 	
@@ -40,16 +47,4 @@ public class StopsDao {
 		}
 		return models;		
 	}
-	
-	private static Connection getConnection(){
-		try{
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/CanIMakeItDB","root", "");
-			return connection;
-		}catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
-	}
-
 }
