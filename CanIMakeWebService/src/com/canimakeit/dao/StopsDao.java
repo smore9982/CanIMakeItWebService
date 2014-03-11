@@ -8,28 +8,47 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import com.canimakeit.models.StopModel;
 
 public class StopsDao extends ParentDao {
 	
+	public StopsDao(DataSource datasource) {
+		super(datasource);	
+	}
+
 	public List<StopModel> getStops() throws Exception{
 		Connection connection =  getConnection();
 		List<StopModel> listStopModels = new ArrayList<StopModel>();
 		if(connection!=null){
+			PreparedStatement getStmt = null;
+			ResultSet resultSet = null;
 			try{
 				System.out.println("GOT A CONNECTION");
 				String getStops = "select * from stops";			
-				PreparedStatement getStmt = connection.prepareStatement(getStops);
-				ResultSet resultSet = getStmt.executeQuery();
+				getStmt = connection.prepareStatement(getStops);
+				resultSet = getStmt.executeQuery();
 				listStopModels = parseResultSet(resultSet);
 				resultSet.close();
 				connection.close();
 			}catch(Exception e){
+				try{
+					if(getStmt !=null){
+						getStmt.close();
+					}
+				}catch(Exception e1){};
 				
+				try{
+					if (resultSet !=null ){
+						resultSet.close();
+					}
+				}catch(Exception e2){};
 			}finally{
 				connection.close();
 			}
 			return listStopModels;			
+		
 		}else{
 			return listStopModels;
 		}

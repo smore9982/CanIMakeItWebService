@@ -16,14 +16,16 @@ import javax.sql.DataSource;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.canimakeit.dao.DepartureTimesDao;
 import com.canimakeit.dao.StopsDao;
+import com.canimakeit.models.DepartureTimesModel;
 import com.canimakeit.models.StopModel;
 
 
-public class GetStops extends HttpServlet {
+public class GetDepartureTimes extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public GetStops() {
+    public GetDepartureTimes() {
         super();
     }
     
@@ -46,17 +48,21 @@ public class GetStops extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		StopsDao stopDao = new StopsDao(dataSource);
+		DepartureTimesDao timesDao = new DepartureTimesDao(dataSource);
+		String fromId = request.getParameter("fromStationID");
+		String toId = request.getParameter("toStationID");
+		String direction = "0";
+		System.out.println("Params = " + fromId + toId + direction);
 		try{
-			List<StopModel> models = stopDao.getStops();
+			List<DepartureTimesModel> models = timesDao.getTimes(fromId, toId, direction);
 			JSONArray jsonArray = new JSONArray();
 			for(int i=0;i<models.size();i++){
-				StopModel model = models.get(i);
+				DepartureTimesModel model = models.get(i);
 				JSONObject jsonObj = new JSONObject();
-				jsonObj.put("id", model.getStop_id());
-				jsonObj.put("name", model.getStop_name());
-				jsonObj.put("lat", model.getStop_lat());
-				jsonObj.put("lon", model.getStop_lon());
+				jsonObj.put("departureStopId",model.getFromStopId());
+				jsonObj.put("destinationStopId",model.getToStopId());
+				jsonObj.put("departureDate",model.getServiceDate());
+				jsonObj.put("departureTimes",model.getDepartureTimes());
 				jsonArray.add(jsonObj);
 				
 			}	
