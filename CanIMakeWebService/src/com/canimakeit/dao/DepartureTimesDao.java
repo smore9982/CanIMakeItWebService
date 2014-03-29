@@ -27,7 +27,7 @@ public class DepartureTimesDao extends ParentDao {
 													 "t.trip_id = fromStop.trip_id and " +
 													 "t.service_id = c.service_id and " +
 													 "t.trip_direction = ? and " +
-													 "c.date >= CURDATE() " +
+													 "c.date >= DATE_ADD(CURDATE(),INTERVAL -1 DAY)" +
 													 "order by c.date,fromStop.departure_time";
 	
 	
