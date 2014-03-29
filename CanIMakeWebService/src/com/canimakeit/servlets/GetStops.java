@@ -66,6 +66,7 @@ public class GetStops extends HttpServlet {
 			out.flush();
 		}catch(Exception e){
 			System.out.println("An error occured trying to get stops" + e.getMessage());
+			e.printStackTrace();
 		}		
 	}
 
