@@ -2,6 +2,7 @@ package com.canimakeit.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.Context;
@@ -52,13 +53,22 @@ public class GetDepartureTimes extends HttpServlet {
 		StopsDao stopDao = new StopsDao(dataSource);
 		String fromId = request.getParameter("fromStationID");
 		String toId = request.getParameter("toStationID");
+		String transferId = request.getParameter("transferStationID");
 		try{
-			StopModel fromStop = stopDao.getStopWithID(fromId);
-			StopModel toStop = stopDao.getStopWithID(toId);
-			
-			String direction = findBearing(fromStop,toStop);
-					
-			List<DepartureTimesModel> models = timesDao.getTimes(fromId, toId, direction);
+			List<DepartureTimesModel> models = new ArrayList<DepartureTimesModel>();		
+			if(transferId!=null && transferId.length()>0){
+				StopModel fromStop = stopDao.getStopWithID(fromId);
+				StopModel toStop = stopDao.getStopWithID(toId);		
+				StopModel transferStop = stopDao.getStopWithID(transferId);	
+				String direction1 = findBearing(fromStop,transferStop);
+				String direction2 = findBearing(transferStop,toStop);
+				models = timesDao.getTime(fromId, toId, transferId, direction1, direction2);
+			}else{
+				StopModel fromStop = stopDao.getStopWithID(fromId);
+				StopModel toStop = stopDao.getStopWithID(toId);			
+				String direction = findBearing(fromStop,toStop);
+				models = timesDao.getTimes(fromId, toId, direction);
+			}
 			JSONArray jsonArray = new JSONArray();
 			for(int i=0;i<models.size();i++){
 				DepartureTimesModel model = models.get(i);
