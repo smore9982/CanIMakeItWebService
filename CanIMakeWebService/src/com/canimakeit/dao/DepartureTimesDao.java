@@ -30,9 +30,9 @@ public class DepartureTimesDao extends ParentDao {
 													 "c.date >= DATE_ADD(CURDATE(),INTERVAL -1 DAY)" +
 													 "order by c.date,fromStop.departure_time";
 	
-	private final static String departureTimeQueryWithTransfer = "select fromStopName1,toStopName2,departureTime1,date1,stopTimeId1 "+
+	private final static String departureTimeQueryWithTransfer = "select fromStopId1,toStopId2,departureTime1,date1,stopTimeId1 "+
 																	"FROM "+ 
-																	"(select fromStop1.stop_name as fromStopName1,toStop1.stop_name as toStopName1,fromStopTime1.departure_time as departureTime1,toStopTime1.arrival_time as arrivalTime1, c1.date as date1,fromStopTime1.stop_time_id as stopTimeId1 "+
+																	"(select fromStopTime1.stop_id as fromStopId1,toStopTime1.stop_id as toStopId1,fromStopTime1.departure_time as departureTime1,toStopTime1.arrival_time as arrivalTime1, c1.date as date1,fromStopTime1.stop_time_id as stopTimeId1 "+
 																	"from stop_times fromStopTime1, stop_times toStopTime1,trips trip1, calendar_dates c1, stops toStop1, stops fromStop1 "+
 																	"where "+ 
 																	"fromStopTime1.stop_id = ? and "+ 
@@ -45,7 +45,7 @@ public class DepartureTimesDao extends ParentDao {
 																	"trip1.trip_direction = ? and "+
 																	"c1.date >= DATE_ADD(CURDATE(),INTERVAL - 1 DAY) "+
 																	"order by c1.date,fromStopTime1.departure_time) as firstTrip, "+
-																	"(select fromStop2.stop_name as fromStopName2,toStop2.stop_name as toStopName2,fromStopTime2.departure_time as departureTime2,toStopTime2.arrival_time as arrivalTime2, c2.date as date2,fromStopTime2.stop_time_id as stopTimeId2 "+
+																	"(select fromStopTime2.stop_id as fromStopId2,toStopTime2.stop_id as toStopId2,fromStopTime2.departure_time as departureTime2,toStopTime2.arrival_time as arrivalTime2, c2.date as date2,fromStopTime2.stop_time_id as stopTimeId2 "+
 																	"from stop_times fromStopTime2, stop_times toStopTime2,trips trip2, calendar_dates c2, stops toStop2, stops fromStop2 "+
 																	"where "+ 
 																	"fromStopTime2.stop_id = ? and "+ 
@@ -60,7 +60,7 @@ public class DepartureTimesDao extends ParentDao {
 																	"order by c2.date,fromStopTime2.departure_time) as secondTrip "+
 																	"WHERE "+ 
 																	"date1 = date2 and "+
-																	"departureTime2 - arrivalTime1 <=60*15 and "+
+																	"departureTime2 - arrivalTime1 <=60*20 and "+
 																	"departureTime2 - arrivalTime1 > 0; ";
 	
 	
