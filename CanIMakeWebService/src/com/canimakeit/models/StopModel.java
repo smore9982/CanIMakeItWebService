@@ -5,6 +5,7 @@ public class StopModel {
 	private String stop_name;
 	private String stop_lat;
 	private String stop_lon;
+	private boolean stopTransferPoint;
 	
 	public StopModel(String stopId, String stopName, String stopLat, String stopLon){
 		this.stop_id = stopId;
@@ -40,5 +41,13 @@ public class StopModel {
 	
 	public String toString(){
 		return "STOP: " + this.stop_id + " " + this.stop_name + " " + this.stop_lat + " " + this.stop_lon;
+	}
+
+	public boolean isStopTransferPoint() {
+		return stopTransferPoint;
+	}
+
+	public void setStopTransferPoint(boolean stopTransferPoint) {
+		this.stopTransferPoint = stopTransferPoint;
 	}
 }

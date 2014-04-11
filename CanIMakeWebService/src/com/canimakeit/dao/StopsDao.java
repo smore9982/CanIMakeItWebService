@@ -18,7 +18,7 @@ public class StopsDao extends ParentDao {
 		super(datasource);	
 	}
 
-	public List<StopModel> getStops() throws Exception{
+	public List<StopModel> getStops(boolean onlyTransferStations) throws Exception{
 		Connection connection =  getConnection();
 		List<StopModel> listStopModels = new ArrayList<StopModel>();
 		if(connection!=null){
@@ -26,7 +26,10 @@ public class StopsDao extends ParentDao {
 			ResultSet resultSet = null;
 			try{
 				System.out.println("GOT A CONNECTION");
-				String getStops = "select * from stops";			
+				String getStops = "select * from stops";	
+				if(onlyTransferStations){
+					getStops = getStops + " where stops.stop_transfer=1";
+				}		
 				getStmt = connection.prepareStatement(getStops);
 				resultSet = getStmt.executeQuery();
 				listStopModels = parseResultSet(resultSet);
@@ -97,7 +100,9 @@ public class StopsDao extends ParentDao {
 			String name = rs.getString(2);
 			String lat = rs.getString(3);
 			String lon = rs.getString(4);
+			boolean isTransferPoint = rs.getBoolean(5);
 			StopModel model = new StopModel(id,name,lat,lon);
+			model.setStopTransferPoint(isTransferPoint);
 			return model;
 		}
 		return null;
@@ -110,7 +115,9 @@ public class StopsDao extends ParentDao {
 			String name = rs.getString(2);
 			String lat = rs.getString(3);
 			String lon = rs.getString(4);
+			boolean isTransferPoint = rs.getBoolean(5);
 			StopModel model = new StopModel(id,name,lat,lon);
+			model.setStopTransferPoint(isTransferPoint);
 			models.add(model);
 		}
 		return models;		

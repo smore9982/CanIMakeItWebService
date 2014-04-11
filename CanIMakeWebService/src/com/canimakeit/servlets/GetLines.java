@@ -16,14 +16,12 @@ import javax.sql.DataSource;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import com.canimakeit.dao.StopsDao;
-import com.canimakeit.models.StopModel;
+import com.canimakeit.dao.AgencyDao;
+import com.canimakeit.models.AgencyModel;
 
-
-public class GetStops extends HttpServlet {
+public class GetLines extends HttpServlet{
 	private static final long serialVersionUID = 1L;
-       
-    public GetStops() {
+	public GetLines() {
         super();
     }
     
@@ -41,23 +39,20 @@ public class GetStops extends HttpServlet {
         }
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request,response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		StopsDao stopDao = new StopsDao(dataSource);
+		AgencyDao agencyDao = new AgencyDao(dataSource);
 		try{
-			List<StopModel> models = stopDao.getStops(false);
+			List<AgencyModel> models = agencyDao.getLines();
 			JSONArray jsonArray = new JSONArray();
 			for(int i=0;i<models.size();i++){
-				StopModel model = models.get(i);
+				AgencyModel model = models.get(i);
 				JSONObject jsonObj = new JSONObject();
-				jsonObj.put("id", model.getStop_id());
-				jsonObj.put("name", model.getStop_name());
-				jsonObj.put("lat", model.getStop_lat());
-				jsonObj.put("lon", model.getStop_lon());
-				jsonObj.put("isTransferStation", model.isStopTransferPoint());
+				jsonObj.put("id", model.getAgency_id());
+				jsonObj.put("name", model.getAgency_name());
 				jsonArray.add(jsonObj);
 				
 			}	
@@ -70,5 +65,4 @@ public class GetStops extends HttpServlet {
 			e.printStackTrace();
 		}		
 	}
-
 }

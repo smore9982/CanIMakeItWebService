@@ -31,4 +31,13 @@
     <servlet-name>getdeparturetimes</servlet-name>
     <url-pattern>/GetDepartureTimes</url-pattern>
 </servlet-mapping>
+<servlet>
+    <servlet-name>getlines</servlet-name>
+    <servlet-class>com.canimakeit.servlets.GetLines</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>getlines</servlet-name>
+    <url-pattern>/GetLines</url-pattern>
+</servlet-mapping>
+
 </web-app>
