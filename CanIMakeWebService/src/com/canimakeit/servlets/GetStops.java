@@ -58,8 +58,14 @@ public class GetStops extends HttpServlet {
 				jsonObj.put("lat", model.getStop_lat());
 				jsonObj.put("lon", model.getStop_lon());
 				jsonObj.put("isTransferStation", model.isStopTransferPoint());
-				jsonArray.add(jsonObj);
-				
+				if(model.getStop_id().startsWith("LI")){
+					jsonObj.put("agency","LI");
+				}else if(model.getStop_id().startsWith("NJT")){
+					jsonObj.put("agency", "NJT");
+				}else{
+					jsonObj.put("agency","");
+				}
+				jsonArray.add(jsonObj);				
 			}	
 			response.setContentType("application/json");
 			PrintWriter out = response.getWriter();

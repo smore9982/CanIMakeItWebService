@@ -39,5 +39,13 @@
     <servlet-name>getlines</servlet-name>
     <url-pattern>/GetLines</url-pattern>
 </servlet-mapping>
+<servlet>
+    <servlet-name>getadvisories</servlet-name>
+    <servlet-class>com.canimakeit.servlets.GetAdvisories</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>getadvisories</servlet-name>
+    <url-pattern>/GetAdvisories</url-pattern>
+</servlet-mapping>
 
 </web-app>

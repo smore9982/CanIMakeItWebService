@@ -52,4 +52,9 @@ public class AdvisoryModel {
 	public void setExpiredDate(String expiredDate) {
 		this.expiredDate = expiredDate;
 	}
+	
+	public String toString(){
+		return this.advisoryText + ":" + this.advisoryId + ":" + this.routeId + ":" + this.createdDate + ":" + this.expiredDate;
+		
+	}
 }
